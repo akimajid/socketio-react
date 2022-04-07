@@ -9,8 +9,8 @@ const App = () => {
   const [messages, setMessages] = useState([])
 
   const triggerEvent = () => {
-    socketConnection.emit("my-event", {
-      message: "Hello world!"
+    socketConnection.emit("SEND_MESSAGE", {
+      message: Date.now().toString()
     })
   }
 
