@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import RoomsPage from "./pages/rooms"
 import axios from "axios"
 
-const socketConnection = io("http://localhost:2000")
+// const socketConnection = io("http://localhost:2000")
 
 const App = () => {
 
@@ -14,6 +14,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/rooms" element={<RoomsPage />} />
+        <Route path="/chat-room/:roomid" element={<RoomsPage />} />
       </Routes>
     </BrowserRouter>
   )

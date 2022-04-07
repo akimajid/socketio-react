@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import ReactSelect from "react-select";
 import { io } from "socket.io-client"
+import { Link } from "react-router-dom";
 
 const socketConnection = io("http://localhost:2000")
 
@@ -11,6 +12,8 @@ const RoomsPage = () => {
   const [selectedUsers, setSelectedUSers] = useState([]);
 
   const [rooms, setRooms] = useState([]);
+
+  const [selectedLoggedInUser, setSelectedLoggedInUser] = useState({})
 
   const fetchUsers = async () => {
     try {
@@ -88,6 +91,7 @@ const RoomsPage = () => {
               <tr>
                 <td>Room Name</td>
                 <td>Participants</td>
+                <td>Join Room</td>
               </tr>
             </thead>
             <tbody>
@@ -98,13 +102,33 @@ const RoomsPage = () => {
                     <td>
                       {val?.Users?.map((user) => user.username).join(", ")}
                     </td>
+                    <td>
+                        <Link to={`/chat-room/${val.id}`}>
+                            <Button color="success">Join Chat Room</Button>
+                        </Link>
+                    </td>
                   </tr>
                 );
               })}
             </tbody>
           </Table>
         </div>
-        <div className="col-6"></div>
+        <div className="col-6">
+            <h2>
+                Logged in as: {" "}
+                {JSON.parse(localStorage.getItem("user"))?.username || "no one"}
+            </h2>
+            <ReactSelect 
+            options={usersReactSelectOptions()}
+            onChange={({ label, value }) => 
+            setSelectedLoggedInUser({ id: value, username: label })} />
+
+            <Button
+            onClick={() => localStorage.setItem("user", JSON.stringify(selectedLoggedInUser))}
+            className="mt-3">
+                Login
+            </Button>
+        </div>
       </div>
     </Container>
   );
